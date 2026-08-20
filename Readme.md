@@ -21,11 +21,28 @@ A simple packet analyzer written in C using libpcap.
 - [ ] Add packet filtering
 - [ ] Add packet statistics
 
-## Structure
+## How it works
 
-```text
-packet/
-├── include/
-├── src/
-├── Makefile
-└── README.md
+
+        Raw Packet
+            │
+            ▼
+┌──────────────────────────────┐
+│      Ethernet Header         │
+├──────────────┬───────────────┤
+│ Destination  │   6 bytes     │
+│ MAC          │               │
+├──────────────┼───────────────┤
+│ Source MAC   │   6 bytes     │
+├──────────────┼───────────────┤
+│ EtherType    │   2 bytes     │
+└──────────────┴───────────────┘
+              │
+              ▼
+        EtherType = 0x0800 (ipv4)
+              │
+              ▼
+         IPv4 Header 
+              │
+              ▼
+            ......
