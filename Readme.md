@@ -25,24 +25,15 @@ A simple packet analyzer written in C using libpcap.
 
 
         Raw Packet
-            │
+            │ (parse)
             ▼
-┌──────────────────────────────┐
-│      Ethernet Header         │
-├──────────────┬───────────────┤
-│ Destination  │   6 bytes     │
-│ MAC          │               │
-├──────────────┼───────────────┤
-│ Source MAC   │   6 bytes     │
-├──────────────┼───────────────┤
-│ EtherType    │   2 bytes     │
-└──────────────┴───────────────┘
-              │
+        Ethernet Header 
+              │ (parse)
               ▼
         EtherType = 0x0800 (ipv4)
-              │
+              │ (parse)
               ▼
          IPv4 Header 
-              │
+              │ (parse)
               ▼
-            ......
+         TCP/UDP Header
