@@ -13,7 +13,7 @@ void print_mac(const unsigned char *mac){
            mac[5]);
 }
 
-void parse_ethernet(const unsigned char *packet){
+int parse_ethernet(const unsigned char *packet){
     const struct ethernet_header *eth = (const struct ethernet_header *)packet;
         
     unsigned short ether_type = ntohs(eth->ether_type);
@@ -28,7 +28,11 @@ void parse_ethernet(const unsigned char *packet){
 
         printf("EtherType :  0x%04x\n", ether_type);
 
-        if (ether_type == 0x0800){
-            parse_ipv4(packet + 14);
-        }
-        }
+        if (ntohs(eth->ether_type) == 0x0800)
+    {
+        parse_ipv4(packet + 14);
+        return 1;
+    }
+
+    return 0;
+}

@@ -47,17 +47,24 @@ void open_capture (const char *device){
     struct pcap_pkthdr *header;
     const u_char *packet;
 
+    while (1)
+{
     int result = pcap_next_ex(handle, &header, &packet);
 
-        if (result == 1) {
-
+    if (result == 1)
+    {
         printf("Packet captured!\n");
         printf("Captured length: %u bytes\n", header->caplen);
         printf("Original length: %u bytes\n", header->len);
 
-        parse_ethernet(packet);
+        if (parse_ethernet(packet))
+        {
+            break;
+        }
 
+        printf("Not IPv4. Ignoring...\n\n");
     }
+}
     
     pcap_close(handle);
    

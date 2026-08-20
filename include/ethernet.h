@@ -9,6 +9,6 @@ struct ethernet_header {
     uint16_t ether_type;
 };
 
-void parse_ethernet(const unsigned char *packet);
+int parse_ethernet(const unsigned char *packet);
 
 #endif
