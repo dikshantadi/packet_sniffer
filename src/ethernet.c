@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <arpa/inet.h>
+#include "ethernet.h"
+#include "ipv4.h"
+
+void print_mac(const unsigned char *mac){
+    printf("%02x:%02x:%02x:%02x:%02x:%02x",
+           mac[0],
+           mac[1],
+           mac[2],
+           mac[3],
+           mac[4],
+           mac[5]);
+}
+
+void parse_ethernet(const unsigned char *packet){
+    const struct ethernet_header *eth = (const struct ethernet_header *)packet;
+        
+    unsigned short ether_type = ntohs(eth->ether_type);
+
+        printf("Destination MAC: ");
+        print_mac(eth->destination);
+        printf("\n");
+
+        printf("Source MAC: ");
+        print_mac(eth->source);
+        printf("\n");
+
+        printf("EtherType :  0x%04x\n", ether_type);
+
+        if (ether_type == 0x0800){
+            parse_ipv4(packet + 14);
+        }
+        }

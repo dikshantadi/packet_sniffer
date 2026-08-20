@@ -10,6 +10,7 @@ int main(void)
     list_interfaces();
 
     open_capture("wlp0s20f3");
+    
 
     return 0;
 }

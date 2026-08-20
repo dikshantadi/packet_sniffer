@@ -13,7 +13,7 @@ A simple packet analyzer written in C using libpcap.
 
 - [x] List network interfaces
 - [x] Open a network interface
-- [ ] Capture packets
+- [x] Capture packets
 - [ ] Parse Ethernet headers
 - [ ] Parse IPv4 headers
 - [ ] Parse TCP/UDP headers

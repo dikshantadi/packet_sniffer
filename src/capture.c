@@ -2,6 +2,8 @@
 #include <pcap.h>
 
 #include "capture.h"
+#include "ethernet.h"
+
 
 void list_interfaces(void)
 {
@@ -37,11 +39,26 @@ void open_capture (const char *device){
         1000,
         errbuf);
     if (handle == NULL) {
-	fprintf(stderr, "Couldn't open device %s: %s\n", dev, errbuf);
+	fprintf(stderr, "Couldn't open device %s: %s\n", device, errbuf);
 	return;
 }
     printf("Successfully opened: %s\n", device);
 
+    struct pcap_pkthdr *header;
+    const u_char *packet;
+
+    int result = pcap_next_ex(handle, &header, &packet);
+
+        if (result == 1) {
+
+        printf("Packet captured!\n");
+        printf("Captured length: %u bytes\n", header->caplen);
+        printf("Original length: %u bytes\n", header->len);
+
+        parse_ethernet(packet);
+
+    }
+    
     pcap_close(handle);
    
 }
