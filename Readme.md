@@ -24,16 +24,16 @@ A simple packet analyzer written in C using libpcap.
 ## How it works
 
 
-        [Raw Packet] [https://en.wikipedia.org/wiki/Network_packet]
+        Raw Packet
             │ (parse)
             ▼
-        Ethernet Header <https://en.wikipedia.org/wiki/Ethernet_frame>
+        Ethernet Header 
               │ (parse)
               ▼
-        EtherType = 0x0800 (ipv4) <https://en.wikipedia.org/wiki/EtherType>
+        EtherType = 0x0800 (ipv4)
               │ (parse)
               ▼
-         IPv4 Header <https://en.wikipedia.org/wiki/IPv4>
+         IPv4 Header 
               │ (parse)
               ▼
-         TCP/UDP Header <https://en.wikipedia.org/wiki/Transmission_Control_Protocol> 
+         TCP/UDP Header
