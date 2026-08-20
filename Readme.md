@@ -24,7 +24,7 @@ A simple packet analyzer written in C using libpcap.
 ## How it works
 
 
-        [Raw Packet] (https://en.wikipedia.org/wiki/Network_packet)
+        [Raw Packet] [https://en.wikipedia.org/wiki/Network_packet]
             │ (parse)
             ▼
         Ethernet Header <https://en.wikipedia.org/wiki/Ethernet_frame>
