@@ -15,8 +15,8 @@ A simple packet analyzer written in C using libpcap.
 - [x] Open a network interface
 - [x] Capture packets
 - [x] Parse Ethernet headers
-- [-] Parse IPv4 headers (on progress)
-- [ ] Parse TCP/UDP headers
+- [x] Parse IPv4 headers 
+- [.] Parse TCP/UDP headers (on progress)
 - [ ] Display packet information
 - [ ] Add packet filtering
 - [ ] Add packet statistics
