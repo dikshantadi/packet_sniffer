@@ -1,39 +1,95 @@
 # Packet Analyzer
 
-A simple packet analyzer written in C using libpcap.
+A lightweight network packet analyzer written in **C** using **libpcap**.
 
-## Goals
-
-- Learn low-level network programming
-- Capture and analyze network packets
-- Understand Ethernet, IP, TCP, and UDP protocols
-- Understand System and Networking concepts
+The goal of this project is to understand how network protocols work at the byte level by capturing raw packets and manually dissecting their protocol headers instead of relying on high-level packet-parsing libraries.
 
 ## Progress
 
-- [x] List network interfaces
-- [x] Open a network interface
-- [x] Capture packets
-- [x] Parse Ethernet headers
-- [x] Parse IPv4 headers 
-- [.] Parse TCP/UDP headers (on progress)
-- [ ] Display packet information
-- [ ] Add packet filtering
-- [ ] Add packet statistics
+* [x] List network interfaces
+* [x] Open a network interface
+* [x] Capture packets
+* [x] Parse Ethernet headers
+* [x] Parse IPv4 headers
+* [x] Parse basic TCP headers
+* [ ] Parse UDP headers
+* [.] Parse TCP options (To do next)
+* [ ] Parse ICMP
+* [ ] Parse IPv6
+* [ ] Extract TCP/UDP payload
+* [ ] Parse application-layer protocols
+  * [ ] DNS
+  * [ ] HTTP
+* [ ] Add packet filtering
+* [ ] Add packet statistics
 
-## How it works
+## Current Architecture
 
+```text
+Captured Packet
+      │
+      ▼
+  Ethernet
+      │
+      │ EtherType
+      ▼
+    IPv4
+      │
+      │ Protocol
+      ├───────────────┐
+      ▼               ▼
+     TCP              UDP
+      │
+      │ Destination Port
+      ▼
+Application Protocol
+```
 
-        Raw Packet
-            │ (parse)
-            ▼
-        Ethernet Header 
-              │ (parse)
-              ▼
-        EtherType = 0x0800 (ipv4)
-              │ (parse)
-              ▼
-         IPv4 Header 
-              │ (parse)
-              ▼
-         TCP/UDP Header
+## Currently Parsed
+
+### Ethernet
+
+* Destination MAC address
+* Source MAC address
+* EtherType
+
+### IPv4
+
+* Version
+* Internet Header Length (IHL)
+* Time To Live (TTL)
+* Total Length
+* Identification
+* Flags
+* Fragment Offset
+* Protocol
+* Header Checksum
+* Source IP address
+* Destination IP address
+
+### TCP
+
+* Source Port
+* Destination Port
+* Sequence Number
+* Acknowledgment Number
+* Data Offset
+* TCP Header Length
+* TCP Flags
+  * URG
+  * ACK
+  * PSH
+  * RST
+  * SYN
+  * FIN
+* Window Size
+* Checksum
+* Urgent Pointer
+
+## Why IM I Building This?
+
+This project is primarily a **Data Communication and networking learning project**.
+
+Rather than treating packets as opaque objects, the analyzer works directly with captured byte buffers and maps those bytes onto protocol header structures.
+
+The long-term goal is to build a small multi-layer protocol dissector capable of following a packet from the Ethernet frame all the way into application-layer protocols.
