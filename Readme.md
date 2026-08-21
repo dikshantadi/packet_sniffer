@@ -88,8 +88,6 @@ Application Protocol
 
 ## Why IM I Building This?
 
-This project is primarily a **Data Communication and networking learning project**.
-
-Rather than treating packets as opaque objects, the analyzer works directly with captured byte buffers and maps those bytes onto protocol header structures.
+This project is primarily a **Data Communication and Networking learning project**.
 
 The long-term goal is to build a small multi-layer protocol dissector capable of following a packet from the Ethernet frame all the way into application-layer protocols.
