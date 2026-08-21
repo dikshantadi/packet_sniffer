@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "ipv4.h"
 #include <arpa/inet.h>
+#include "tcp.h"
 
 void parse_ipv4(const unsigned char *packet)
 {
@@ -34,4 +35,8 @@ void parse_ipv4(const unsigned char *packet)
     printf("Checksum: 0x%04x\n", checksum);
     printf("Source IP: %s\n", source_ip);
     printf("Destination IP: %s\n", destination_ip);
+
+    if (protocol == 6){
+        parse_tcp(packet + ihl * 4);
+    }
 }
