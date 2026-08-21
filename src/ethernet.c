@@ -27,6 +27,7 @@ int parse_ethernet(const unsigned char *packet){
         printf("\n");
 
         printf("EtherType :  0x%04x\n", ether_type);
+        printf("======================== \n");
 
         if (ntohs(eth->ether_type) == 0x0800)
     {

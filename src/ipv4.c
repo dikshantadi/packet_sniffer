@@ -35,6 +35,7 @@ void parse_ipv4(const unsigned char *packet)
     printf("Checksum: 0x%04x\n", checksum);
     printf("Source IP: %s\n", source_ip);
     printf("Destination IP: %s\n", destination_ip);
+    printf("======================== \n");
 
     if (protocol == 6){
         parse_tcp(packet + ihl * 4);

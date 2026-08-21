@@ -56,6 +56,7 @@ void open_capture (const char *device){
         printf("Packet captured!\n");
         printf("Captured length: %u bytes\n", header->caplen);
         printf("Original length: %u bytes\n", header->len);
+        printf("======================== \n");
 
         if (parse_ethernet(packet))
         {
