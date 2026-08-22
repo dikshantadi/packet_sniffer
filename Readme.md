@@ -91,3 +91,5 @@ Application Protocol
 This project is primarily a **Data Communication and Networking learning project**.
 
 The long-term goal is to build a small multi-layer protocol dissector capable of following a packet from the Ethernet frame all the way into application-layer protocols.
+
+TCP is overpowered!!!!!!!!
