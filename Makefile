@@ -4,7 +4,7 @@ LDLIBS = -lpcap
 
 TARGET = packet-analyzer
 
-SRC = src/main.c src/capture.c src/ethernet.c src/ipv4.c src/tcp.c
+SRC = src/main.c src/capture.c src/ethernet.c src/ipv4.c src/tcp.c src/udp.c
 
 $(TARGET): $(SRC)
 	$(CC) $(CFLAGS) $(SRC) $(LDLIBS) -o $(TARGET)

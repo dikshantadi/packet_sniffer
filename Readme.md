@@ -12,7 +12,7 @@ The goal of this project is to understand how network protocols work at the byte
 * [x] Parse Ethernet headers
 * [x] Parse IPv4 headers
 * [x] Parse basic TCP headers
-* [ ] Parse UDP headers
+* [x] Parse UDP headers
 * [.] Parse TCP options (To do next)
 * [ ] Parse ICMP
 * [ ] Parse IPv6

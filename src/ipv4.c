@@ -2,6 +2,7 @@
 #include "ipv4.h"
 #include <arpa/inet.h>
 #include "tcp.h"
+#include "udp.h"
 
 void parse_ipv4(const unsigned char *packet)
 {
@@ -39,5 +40,8 @@ void parse_ipv4(const unsigned char *packet)
 
     if (protocol == 6){
         parse_tcp(packet + ihl * 4);
+    }
+    else if (protocol == 17){
+        parse_udp(packet + ihl * 4);
     }
 }
