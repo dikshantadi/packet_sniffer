@@ -13,7 +13,7 @@ struct tcp_header {
     uint16_t window_size;
     uint16_t tcp_check;
     uint16_t urgent_pointer;
-
+    uint8_t option_length;
 };
 
 void parse_tcp(const unsigned char *packet);

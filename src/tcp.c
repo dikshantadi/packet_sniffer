@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <arpa/inet.h>
 #include "tcp.h"
+#include "tcp_options.h"
 
 void parse_tcp(const unsigned char *packet){
     const struct tcp_header *tcp = (const struct tcp_header *)packet;
@@ -26,6 +27,8 @@ void parse_tcp(const unsigned char *packet){
     uint16_t tcp_check = ntohs (tcp -> tcp_check);
     uint16_t urgent_pointer = ntohs (tcp -> urgent_pointer);
 
+    uint8_t options_length = tcp_header - 20;
+
     printf("TCP packet \n");
     printf("Source Port : %u \n", source_port);
     printf("Destination port : %u \n", destination_port);
@@ -43,6 +46,13 @@ void parse_tcp(const unsigned char *packet){
     printf("window size : %u\n", window_size);
     printf("Checksum : %u\n", tcp_check);
     printf("Urgent Pointer : %u\n", urgent_pointer);
+    printf("TCP Options Length: %u bytes\n", options_length);
+
+    if (options_length > 0) {
+    const unsigned char *options = packet + 20;
+
+    parse_tcp_options(options, options_length);
+    }
 
     printf("======================== \n");
     
