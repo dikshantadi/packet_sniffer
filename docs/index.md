@@ -50,13 +50,38 @@ You get the point.
 
 **Too much larp. Let's start.**
 
-Here are some things you need to know before going into the article.
+**Here are some things you need to know before going into the article.**
 
-1 bit = 0 or 1 
+**Number Representation.**
+``` text
+1 bit = 0 or 1, 
 1 byte = 8 bits
+```
 
+**NIC**
+```text
+NIC stands for Network Interface Card. It is the hardware that allows a computer to communicate over a network.
 
-...
+A NIC could be:
+
+An Ethernet network card
+A Wi-Fi adapter
+A virtual network interface
+
+Your computer can have multiple network interfaces. For example, you might have one interface for Wi-Fi, another for Ethernet, and several virtual interfaces created by the operating system.
+
+When we capture packets, we choose a particular network interface to capture from.
+```
+**C**
+```text
+The packet analyzer is written in C.
+
+I chose C because I want to understand what is happening at a relatively low level. When working with network packets, we are essentially dealing with sequences of bytes, memory addresses, structures, pointers, and binary data.
+
+C gives us fairly direct access to these things without hiding too much of what is happening underneath.
+
+You don't need to be an expert in C to understand this article...
+```
 
 ## Ethernet
 
