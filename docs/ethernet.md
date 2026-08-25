@@ -42,6 +42,7 @@ Together, these fields occupy 14 bytes.
 
 The remaining part is the Ethernet payload, which contains data belonging to a higher-layer protocol. For example, an IPv4 packet or an IPv6 packet can be carried inside an Ethernet frame.
 
+## Example 
 Example of Ethernet Parsing done by our sniffer :
 
 ``` text 
