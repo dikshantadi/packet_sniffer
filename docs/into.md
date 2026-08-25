@@ -80,3 +80,5 @@ C gives us fairly direct access to these things without hiding too much of what 
 
 You don't need to be an expert in C to understand this article...
 ```
+
+Next Reading - [Ethernet](ethernet.md)
