@@ -1,6 +1,6 @@
 ## Ethernet / Data Link Layer
 
-What Is Ethernet?
+**What Is Ethernet?**
 
 Ethernet is a family of networking technologies that defines the physical and data-link-layer specifications used for local area network (LAN) communication.
 
