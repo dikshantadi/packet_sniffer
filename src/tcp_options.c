@@ -75,9 +75,33 @@ void parse_tcp_options ( const unsigned char *options, uint8_t options_length){
                 break;
 
             }
+            case 5 : {
+                printf ("Selective Acknowledgement");
+                break;
+            }
+            case 8 : {
+                if (length != 10){
+                    printf ("Malformed Timestamp Option \n");
+                    break;
+                }
+                printf("Timestamp Option \n");
+
+                uint32_t tsval;
+                uint32_t tsecr;
+
+                memcpy(&tsval, &options[i + 2], sizeof(tsval));
+                memcpy(&tsecr, &options[i + 6], sizeof(tsecr));
+
+                tsval = ntohl(tsval);
+                tsecr = ntohl(tsecr);
+
+                printf (" TSval : %u \n", tsval);
+                printf (" TSecr : %u \n", tsecr);
+                break;
+            }
 
             default:
-            printf("Unknown options \n");
+            printf("Unknown TCP options \n");
             break;
         }
 
