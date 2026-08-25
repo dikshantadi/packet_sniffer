@@ -81,4 +81,55 @@ C gives us fairly direct access to these things without hiding too much of what 
 You don't need to be an expert in C to understand this article...
 ```
 
+**Encapsulation**
+
+Before we start looking at individual protocols, there is one important concept to understand: **encapsulation**.
+
+When data is sent across a network, each layer adds its own information around the data from the layer above it. Think of it like putting one package inside another:
+
+For example :
+
+```
+Application Data
+      │
+      ▼
+┌──────────────────────┐
+│ TCP Header           │
+│ Application Data     │
+└──────────────────────┘
+      │
+      ▼
+┌──────────────────────┐
+│ IPv4 Header          │
+│ TCP Header           │
+│ Application Data     │
+└──────────────────────┘
+      │
+      ▼
+┌──────────────────────┐
+│ Ethernet Header      │
+│ IPv4 Header          │
+│ TCP Header           │
+│ Application Data     │
+└──────────────────────┘
+
+```
+
+```
+so Basically a packet looks like this
+┌──────────────┬───────────────────────────────────────┐
+│ Ethernet     │ IPv4 Packet                           │
+│ Header       │ ┌───────────┬─────────────────────┐   │
+│              │ │ IPv4      │ TCP Segment         │   │
+│              │ │ Header    │ ┌───────┬─────────┐ │   │
+│              │ │           │ │ TCP   │  Data   │ │   │
+│              │ │           │ │ Header│         │ │   │
+│              │ │           │ └───────┴─────────┘ │   │
+│              │ └───────────┴─────────────────────┘   │
+└──────────────┴───────────────────────────────────────┘
+```
+When the receiving computer processes the packet, the opposite happens. Each layer examines and removes the information belonging to it before passing the remaining data to the next layer.
+
+This is called decapsulation.
+
 Next Reading - [Ethernet](ethernet.md)
