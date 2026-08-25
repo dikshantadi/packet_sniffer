@@ -6,7 +6,7 @@ Ethernet is a family of networking technologies that defines the physical and da
 
 It is standardized under IEEE 802.3.
 
-Ethernet uses baseband communication , meaning the communication medium is used to carry a signal representing the transmitted data rather than dividing the medium into separate frequency bands for different signals. For our packet analyzer, we will mostly work above this physical layer, so for now just know that ethernet doesnt modulate signals.  
+Ethernet uses baseband communication , meaning the communication medium is used to carry a signal representing the transmitted data rather than dividing the medium into separate frequency bands for different signals. For our packet analyzer, we will mostly work above the physical layer, so we don't need to worry about how the bits are physically represented on the cable for now. If you're interested in how bits become physical signals, and how those signals are transmitted through real communication channels, I'd suggest looking into Digital Signal Processing and Communication Systems Engineering.
 
 At the data-link layer, Ethernet defines how data is organized into frames and how devices are identified on the local network using MAC addresses.
 
@@ -59,8 +59,8 @@ EtherType: 0x86dd
 ``` 
 At first glance, this is just a collection of hexadecimal values and numbers. But each one has a specific meaning. Lets start from the top 
 
-1. Captured length : The length of Ethernet packet we captured.
-2. Original length : The original length of Ethernet packet captured. 
+1. Captured length : Number of bytes that our program actually captured..
+2. Original length : Length of the packet on the network before any capture truncation. 
 3. Destination MAC : This identifies the link-layer destination of the frame.
 4. Source MAC : This identifies the device that transmitted the frame on the local link.
 5. EtherType: This is particularly important for our packet analyzer because it tells us what protocol is contained inside the Ethernet payload. Here 0x86DD means IPv6.
