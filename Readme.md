@@ -87,8 +87,6 @@ Application Protocol
 
 ## Why IM I Building This?
 
-This project is primarily a **Data Communication and Networking learning project**.
+This project is primarily a **Computer Networks learning project**.
 
 The long-term goal is to build a small multi-layer protocol dissector capable of following a packet from the Ethernet frame all the way into application-layer protocols.
-
-TCP is overpowered!!!!!!!!
