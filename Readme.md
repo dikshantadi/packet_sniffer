@@ -6,6 +6,8 @@ The goal of this project is to understand how network protocols work at the byte
 
 ## Progress
 
+Progress and to do: 
+
 * [x] List network interfaces
 * [x] Open a network interface
 * [x] Capture packets
@@ -15,33 +17,49 @@ The goal of this project is to understand how network protocols work at the byte
 * [x] Parse UDP headers
 * [x] Parse TCP options 
 * [-] Parse IPv6 (In progress)
+* [ ] Parse ARP
+* [ ] Handle other Ethertype
 * [ ] Extract TCP/UDP payload
+* [ ] Handle Ipv4 Fragmentation
+* [ ] Handle IPv6 Fragmentation
+* [ ] Parse ICMP (both v4 and v6)
+* [ ] Track TCP Connections
+* [ ] Detect Retransmission
 * [ ] Parse application-layer protocols
   * [ ] DNS
   * [ ] HTTP
 * [ ] Add packet filtering
 * [ ] Add packet statistics
 
+
 ## Current Architecture
 
 ```text
-Captured Packet
-      │
-      ▼
-  Ethernet
-      │
-      │ EtherType
-      ▼
-    IPv4
-      │
-      │ Protocol
-      ├───────────────┐
-      ▼               ▼
-     TCP              UDP
-      │
-      │ Destination Port
-      ▼
-Application Protocol
+Current Architecture
+                         Captured Packet
+                               │
+                               ▼
+                           Ethernet
+                               │
+                         ┌─────┴─────┐
+                         │ EtherType │
+                         └─────┬─────┘
+                               │
+                    ┌──────────┴──────────┐
+                    ▼                     ▼
+                  IPv4                   IPv6
+                    │                     │
+              Protocol           Next Header
+                    |
+                    │                     │
+              ┌─────┴─────┐         ┌─────┴─────┐
+              ▼           ▼         ▼           ▼
+             TCP         UDP       TCP         UDP
+              │           │
+              │           │
+              └─────┬─────┘
+                    ▼
+          Application Protocol
 ```
 
 ## Currently Parsed
@@ -66,6 +84,16 @@ Application Protocol
 * Source IP address
 * Destination IP address
 
+## IPv6
+* Version
+* Traffic Class
+* Flow Label
+* Payload Length
+* Next Header
+* Hop Limit
+* Source IP address
+* Destination IP address
+
 ### TCP
 
 * Source Port
@@ -84,6 +112,21 @@ Application Protocol
 * Window Size
 * Checksum
 * Urgent Pointer
+
+## TCP Options
+* End of Option List (EOL)
+* No-Operation (NOP)
+* Maximum Segment Size (MSS)
+* Window Scale
+* SACK Permitted
+* Selective Acknowledgment (SACK)
+* Timestamps
+
+## UDP
+* Source Port
+* Destination Port
+* Checksum 
+* Length
 
 ## Why IM I Building This?
 
