@@ -76,7 +76,7 @@ void parse_tcp_options ( const unsigned char *options, uint8_t options_length){
 
             }
             case 5 : {
-                printf ("Selective Acknowledgement");
+                printf ("Selective Acknowledgement \n");
                 break;
             }
             case 8 : {
