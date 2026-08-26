@@ -40,6 +40,9 @@ int parse_ethernet(const unsigned char *packet)
     else if (ether_type == 0x86DD) {
         parse_ipv6(packet + 14);
     }
+    else if (ether_type == 0x0806){
+        parse_arp(packet + 14);
+    }
     else {
         printf("Unknown/unsupported EtherType\n");
     }
