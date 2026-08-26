@@ -36,8 +36,10 @@ ICMP Header
 
 ┌──────────┬──────────┬──────────────────────┐ 
 │ Type     │ Code     │ Checksum              │ 
-│ 1 byte   │ 1 byte   │ 2 bytes               │ ├──────────┴──────────┴────────────────────── ┤ 
-│ Message-specific fields                     │ └─────────────────────────────────────────────┘
+│ 1 byte   │ 1 byte   │ 2 bytes               │ 
+├──────────┴──────────┴────────────────────── ┤ 
+│ Message-specific fields                     │ 
+└─────────────────────────────────────────────┘
 
 ```
 The first four bytes contain:
@@ -109,7 +111,8 @@ The structure looks roughly like this:
 ICMP Echo Message 
 
 ┌──────────┬──────────┬──────────────────────┐ 
-│ Type     │ Code     │ Checksum             │ ├──────────┴──────────┴──────────────────────┤ 
+│ Type     │ Code     │ Checksum             │ 
+├──────────┴──────────┴──────────────────────┤ 
 │ Identifier                                 │ 
 ├────────────────────────────────────────────┤ 
 │ Sequence Number                            │ 
