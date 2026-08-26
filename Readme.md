@@ -19,7 +19,7 @@ Progress and to do:
 * [x] Parse UDP headers
 * [x] Parse TCP options 
 * [x] Parse IPv6 
-* [-] Parse ARP (In progress)
+* [x] Parse ARP 
 * [ ] Handle other Ethertype
 * [ ] Extract TCP/UDP payload
 * [ ] Handle Ipv4 Fragmentation
