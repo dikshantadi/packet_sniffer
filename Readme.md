@@ -4,6 +4,8 @@ A lightweight network packet analyzer written in **C** using **libpcap**.
 
 The goal of this project is to understand how network protocols work at the byte level by capturing raw packets and manually dissecting their protocol headers instead of relying on high-level packet-parsing libraries.
 
+Article : https://dikshantadi.github.io/packet_sniffer/
+
 ## Progress
 
 Progress and to do: 
@@ -16,8 +18,8 @@ Progress and to do:
 * [x] Parse basic TCP headers
 * [x] Parse UDP headers
 * [x] Parse TCP options 
-* [-] Parse IPv6 (In progress)
-* [ ] Parse ARP
+* [x] Parse IPv6 
+* [-] Parse ARP (In progress)
 * [ ] Handle other Ethertype
 * [ ] Extract TCP/UDP payload
 * [ ] Handle Ipv4 Fragmentation
@@ -28,38 +30,40 @@ Progress and to do:
 * [ ] Parse application-layer protocols
   * [ ] DNS
   * [ ] HTTP
+  * [ ] QUIC
 * [ ] Add packet filtering
 * [ ] Add packet statistics
+* [ ] Packet loss detection
+* [ ] Physical and Wireless Decoder
+* [ ] Handle VLAN-tagged Ethernet frames
+* [ ] Handle Ethernet padding
 
 
 ## Current Architecture
 
 ```text
 Current Architecture
-                         Captured Packet
-                               │
-                               ▼
-                           Ethernet
-                               │
-                         ┌─────┴─────┐
-                         │ EtherType │
-                         └─────┬─────┘
-                               │
-                    ┌──────────┴──────────┐
-                    ▼                     ▼
-                  IPv4                   IPv6
-                    │                     │
-              Protocol           Next Header
-                    |
-                    │                     │
-              ┌─────┴─────┐         ┌─────┴─────┐
-              ▼           ▼         ▼           ▼
-             TCP         UDP       TCP         UDP
-              │           │
-              │           │
-              └─────┬─────┘
-                    ▼
-          Application Protocol
+Captured Packet
+      │
+      ▼
+  Ethernet
+      │
+  EtherType
+      │
+ ┌────┼───────────────┐
+ ▼    ▼               ▼
+IPv4 IPv6            ARP
+ │    │
+ │    │
+ │    ├── Next Header ──┐
+ │    │                 │
+ └── Protocol ─────┐────│
+                   ▼    ▼
+                 TCP   UDP
+                   │    │
+                   └─┬──┘
+                     ▼
+              Application Protocols
 ```
 
 ## Currently Parsed
@@ -84,7 +88,7 @@ Current Architecture
 * Source IP address
 * Destination IP address
 
-## IPv6
+### IPv6
 * Version
 * Traffic Class
 * Flow Label
@@ -113,7 +117,7 @@ Current Architecture
 * Checksum
 * Urgent Pointer
 
-## TCP Options
+### TCP Options
 * End of Option List (EOL)
 * No-Operation (NOP)
 * Maximum Segment Size (MSS)
@@ -122,7 +126,7 @@ Current Architecture
 * Selective Acknowledgment (SACK)
 * Timestamps
 
-## UDP
+### UDP
 * Source Port
 * Destination Port
 * Checksum 
@@ -133,3 +137,5 @@ Current Architecture
 This project is primarily a **Computer Networks learning project**.
 
 The long-term goal is to build a small multi-layer protocol dissector capable of following a packet from the Ethernet frame all the way into application-layer protocols.
+
+This can also be used to carry out networking experiments.  
