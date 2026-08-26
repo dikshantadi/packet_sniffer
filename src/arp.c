@@ -10,14 +10,14 @@ void parse_arp(const unsigned char *packet){
     uint16_t protocol_type = ntohs(arp -> protocol_type);
     uint16_t operation = ntohs(arp->operation);
     uint8_t hardware_length = arp->hardware_length;
-    uint8_t protocol_length = arp->protocol_lenghth;
+    uint8_t protocol_length = arp->protocol_length;
 
     printf("ARP packet \n");
 
     printf("Hardware Type: %u\n", hardware_type);
     printf("Protocol Type: 0x%04x\n", protocol_type);
     printf("Hardware Length: %u\n", hardware_length);
-    printf("Protocol Length: %u\n", arp->protocol_lenghth);
+    printf("Protocol Length: %u\n", protocol_length);
     printf("Operation : %u\n", operation);
 
     printf("Sender MAC: %02x:%02x:%02x:%02x:%02x:%02x\n",

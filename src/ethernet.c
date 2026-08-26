@@ -3,6 +3,7 @@
 #include "ethernet.h"
 #include "ipv4.h"
 #include "ipv6.h"
+#include "arp.h"
 
 void print_mac(const unsigned char *mac)
 {
