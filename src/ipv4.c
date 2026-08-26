@@ -3,6 +3,7 @@
 #include <arpa/inet.h>
 #include "tcp.h"
 #include "udp.h"
+#include "icmp.h"
 
 void parse_ipv4(const unsigned char *packet)
 {
@@ -43,5 +44,8 @@ void parse_ipv4(const unsigned char *packet)
     }
     else if (protocol == 17){
         parse_udp(packet + ihl * 4);
+    }
+    else if (protocol == 1){
+        parse_icmp(packet + ihl * 4);
     }
 }

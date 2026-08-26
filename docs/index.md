@@ -8,6 +8,7 @@ Table of Content
 - [Ethernet](ethernet.md)
 - [IPv4](ipv4.md)
 - [IPv6](ipv6.md)
+- [ICMP](icmp.md)
 - [TCP](tcp.md)
 - [TCP Options](tcp-options.md)
 - [UDP](udp.md)
