@@ -10,7 +10,6 @@ Table of Content
 - [IPv6](ipv6.md)
 - [ICMP](icmp.md)
 - [TCP](tcp.md)
-- [TCP Options](tcp-options.md)
 - [UDP](udp.md)
 - [ICMP](icmp.md)
 - [C](c.md) 
