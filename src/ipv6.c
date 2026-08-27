@@ -5,6 +5,7 @@
 #include "ipv6.h"
 #include "tcp.h"
 #include "udp.h"
+#include "icmp6.h"
 
 void parse_ipv6(const unsigned char *packet){
     const struct ipv6_header *ipv6 = (const struct ipv6_header *)packet;
@@ -51,6 +52,9 @@ void parse_ipv6(const unsigned char *packet){
     }
     else if (ipv6->next_header == 17){
         parse_udp(packet + 40);
+    }
+    else if (ipv6->next_header == 58){
+        parse_icmp6(packet + 40);
     }
     else {
         printf("Unsupported IPv6 Next Header: %u\n",
