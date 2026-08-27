@@ -25,7 +25,9 @@ Progress and to do:
 * [x] Handle Ipv4 Fragmentation
 * [ ] Handle IPv6 Fragmentation
 * [-] Parse ICMP (both v4 and v6)
+
   *[-] Neighbor Discovery Protocol Parsing (on progress)
+  
 * [ ] Track TCP Connections
 * [ ] Detect Retransmission
 * [ ] Parse application-layer protocols
