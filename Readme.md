@@ -20,14 +20,13 @@ Progress and to do:
 * [x] Parse TCP options 
 * [x] Parse IPv6 
 * [x] Parse ARP 
-* [-] Handle other Ethertype
 * [ ] Extract TCP/UDP payload
 * [x] Handle Ipv4 Fragmentation
 * [ ] Handle IPv6 Fragmentation
 * [-] Parse ICMP (both v4 and v6)
 
   *[-] Neighbor Discovery Protocol Parsing (on progress)
-  
+
 * [ ] Track TCP Connections
 * [ ] Detect Retransmission
 * [ ] Parse application-layer protocols
@@ -47,27 +46,36 @@ Progress and to do:
 
 ```text
 Current Architecture
+
 Captured Packet
       │
       ▼
   Ethernet
       │
-  EtherType
+   EtherType
       │
- ┌────┼───────────────┐
- ▼    ▼               ▼
-IPv4 IPv6            ARP
+ ┌────┼──────────────────┐
+ ▼    ▼                  ▼
+IPv4 IPv6                ARP
  │    │
  │    │
- │    ├── Next Header ──┐
- │    │                 │
- └── Protocol ─────┐────│
-                   ▼    ▼
-                 TCP   UDP
-                   │    │
-                   └─┬──┘
-                     ▼
-              Application Protocols
+ │    └── Next Header
+ │           │
+ │     ┌─────┼───────────────┐
+ │     ▼     ▼               ▼
+ │    TCP   UDP            ICMPv6
+ │                           │
+ │                           └── NDP
+ │
+ └── Protocol
+        │
+   ┌────┼──────────┐
+   ▼    ▼          ▼
+  TCP  UDP        ICMP
+   │    │
+   └────┴──────┐
+               ▼
+      Application Protocols
 ```
 
 ## Currently Parsed
@@ -78,6 +86,18 @@ IPv4 IPv6            ARP
 * Source MAC address
 * EtherType
 
+### ARP 
+
+* Hardware Type
+* Protocol Type
+* Hardware Length
+* Protocol Length
+* Operation
+* Senders MAC
+* Senders IP
+* Target MAC
+* Target IP 
+
 ### IPv4
 
 * Version
@@ -86,6 +106,8 @@ IPv4 IPv6            ARP
 * Total Length
 * Identification
 * Flags
+  * Dont Fragment
+  * More Fragment
 * Fragment Offset
 * Protocol
 * Header Checksum
@@ -136,6 +158,26 @@ IPv4 IPv6            ARP
 * Checksum 
 * Length
 
+### ICMPv4
+* Type
+* Code
+* Checksum
+* Echo Request
+* Echo Reply
+* Identifier
+* Sequence Number
+
+### ICMPv6
+* Type
+* Code
+* Checksum
+* Echo Request
+* Echo Reply
+* Identifier
+* Sequence Number
+* NDP (On progress)
+
+
 ## Why IM I Building This?
 
 This project is primarily a **Computer Networks learning project**.
@@ -143,3 +185,10 @@ This project is primarily a **Computer Networks learning project**.
 The long-term goal is to build a small multi-layer protocol dissector capable of following a packet from the Ethernet frame all the way into application-layer protocols.
 
 This can also be used to carry out networking experiments.  
+
+## Technologies
+* C
+* libpcap
+* Linux
+* Make
+* Git
