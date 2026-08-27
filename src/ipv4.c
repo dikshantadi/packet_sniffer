@@ -18,6 +18,8 @@ void parse_ipv4(const unsigned char *packet)
     uint16_t flags_fragment_offset = ntohs(ip->flags_fragment_offset);
     uint8_t flags = (flags_fragment_offset >> 13) & 0x07;
     uint16_t fragment_offset = flags_fragment_offset & 0x1FFF;
+    uint8_t df = (flags >> 1) & 1;
+    uint8_t mf = flags & 1;
     uint8_t protocol = ip->protocol;
     uint16_t checksum = ntohs(ip->checksum);
     char source_ip[INET_ADDRSTRLEN];
@@ -31,8 +33,10 @@ void parse_ipv4(const unsigned char *packet)
     printf("Time to Live : %u\n", ttl);
     printf("Total Length : %u\n", total_length);
     printf("Identification : %u\n", identification);
-    printf("Flag : %u\n", flags);
-    printf("Fragment Offset : %u\n", fragment_offset);
+    printf("Flag \n");
+    printf ("DF: %u\n", df);
+    printf("Mf : %u\n", mf);
+    printf("Fragment Offset : %u\n", fragment_offset * 8);
     printf("Protocol: %u\n", protocol); //useful for next parser selector, 6 = tcp, 17 = udp, 1 = icmp
     printf("Checksum: 0x%04x\n", checksum);
     printf("Source IP: %s\n", source_ip);
@@ -40,12 +44,27 @@ void parse_ipv4(const unsigned char *packet)
     printf("======================== \n");
 
     if (protocol == 6){
-        parse_tcp(packet + ihl * 4);
+        if (fragment_offset == 0) {
+            parse_tcp(packet + ihl * 4); 
+        }
+        else {
+            printf ("TCP fragment - transport header not present \n");
+        }
     }
     else if (protocol == 17){
+        if (fragment_offset == 0) {
         parse_udp(packet + ihl * 4);
+        }
+        else {
+            printf ("UDP fragment - transport header not present \n");
+        }
     }
     else if (protocol == 1){
-        parse_icmp(packet + ihl * 4);
+        if (fragment_offset == 0){
+            parse_icmp(packet + ihl * 4);
+        }
+        else {
+            printf("ICMP fragment - transport header not present \n");
+        }
     }
 }

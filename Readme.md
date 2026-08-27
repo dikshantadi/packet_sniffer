@@ -20,11 +20,11 @@ Progress and to do:
 * [x] Parse TCP options 
 * [x] Parse IPv6 
 * [x] Parse ARP 
-* [ ] Handle other Ethertype
+* [-] Handle other Ethertype
 * [ ] Extract TCP/UDP payload
-* [ ] Handle Ipv4 Fragmentation
+* [x] Handle Ipv4 Fragmentation
 * [ ] Handle IPv6 Fragmentation
-* [ ] Parse ICMP (both v4 and v6)
+* [-] Parse ICMP (both v4 and v6)
 * [ ] Track TCP Connections
 * [ ] Detect Retransmission
 * [ ] Parse application-layer protocols
@@ -32,6 +32,7 @@ Progress and to do:
   * [ ] HTTP
   * [ ] QUIC
 * [ ] Add packet filtering
+* [ ] IPv4 Fragment Reassembly
 * [ ] Add packet statistics
 * [ ] Packet loss detection
 * [ ] Physical and Wireless Decoder

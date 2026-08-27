@@ -200,7 +200,7 @@ Our parser then reads the ICMP header:
 Type = 0
 Code = 0
 
-Type 8 means Echo Reply.
+Type 0 means Echo Reply.
 
 So our computer is receiving a ping request from: 1.1.1.1
 
