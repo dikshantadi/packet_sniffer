@@ -282,6 +282,8 @@ ICMPv6 is more than just an IPv6 version of ICMP. It is also an important part o
 
 We'll cover ICMPv6 separately when we expand our IPv6 parser.
 
+ICMP Version 6 : [ICMPv6](icmpv6.md)
+
 Continue reading : [Ipv4 Fragmentation](ipv4_frag.md), [IPv6](ipv6.md), [TCP](tcp.md), [UDP](udp.md)
 
 TOC: [TOC](index.md)
