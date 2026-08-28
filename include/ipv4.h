@@ -13,6 +13,8 @@ struct ipv4_header {
     uint16_t checksum;
     uint32_t source_ip;
     uint32_t destination_ip;
+    uint8_t ipv4_header_length;
+    uint8_t options_length;
 };
 
 void parse_ipv4(const unsigned char *packet);

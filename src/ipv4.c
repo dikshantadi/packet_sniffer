@@ -4,6 +4,7 @@
 #include "tcp.h"
 #include "udp.h"
 #include "icmp.h"
+#include "ipv4_options.h"
 
 void parse_ipv4(const unsigned char *packet)
 {
@@ -12,6 +13,8 @@ void parse_ipv4(const unsigned char *packet)
 
     uint8_t version = ip->version_ihl >> 4;
     uint8_t ihl = ip->version_ihl & 0x0F;
+    uint8_t ipv4_header_length = ihl * 4;
+    uint8_t options_length = ipv4_header_length - 20;
     uint8_t ttl = ip->ttl;
     uint16_t total_length = ntohs(ip->total_length);
     uint16_t identification = ntohs(ip->identification);
@@ -37,11 +40,17 @@ void parse_ipv4(const unsigned char *packet)
     printf ("DF: %u\n", df);
     printf("Mf : %u\n", mf);
     printf("Fragment Offset : %u\n", fragment_offset * 8);
-    printf("Protocol: %u\n", protocol); //useful for next parser selector, 6 = tcp, 17 = udp, 1 = icmp
+    printf("Protocol: %u\n", protocol); 
     printf("Checksum: 0x%04x\n", checksum);
     printf("Source IP: %s\n", source_ip);
     printf("Destination IP: %s\n", destination_ip);
     printf("======================== \n");
+
+    if (options_length > 0) {
+    printf("IPv4 Options Length: %u bytes\n", options_length);
+    parse_ipv4_options(packet + 20, options_length);
+
+    }
 
     if (protocol == 6){
         if (fragment_offset == 0) {
