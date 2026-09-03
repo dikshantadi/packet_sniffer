@@ -60,7 +60,7 @@ while (packet_count < 10)
         printf("Captured length: %u bytes\n", header->caplen);
         printf("Original length: %u bytes\n", header->len);
 
-        parse_ethernet(packet);
+        parse_ethernet(packet, header->caplen);
 
         packet_count++;
     }
