@@ -20,13 +20,11 @@ Progress and to do:
 * [x] Parse TCP options 
 * [x] Parse IPv6 
 * [x] Parse ARP 
-* [ ] Extract TCP/UDP payload
 * [x] Handle Ipv4 Fragmentation
-* [ ] Handle IPv6 Fragmentation
-* [-] Parse ICMP (both v4 and v6)
-
-  *[-] Neighbor Discovery Protocol Parsing (on progress)
-
+* [x] Handle IPv6 Fragmentation
+* [x] Parse ICMP (both v4 and v6)
+  *[x] Neighbor Discovery Protocol Parsing
+* [x] Packet Filtering (Berkely Packet Filtering)
 * [ ] Track TCP Connections
 * [ ] Detect Retransmission
 * [ ] Parse application-layer protocols
@@ -40,6 +38,7 @@ Progress and to do:
 * [ ] Physical and Wireless Decoder
 * [ ] Handle VLAN-tagged Ethernet frames
 * [ ] Handle Ethernet padding
+* [ ] Extract TCP/UDP payload
 
 
 ## Current Architecture
@@ -123,6 +122,7 @@ IPv4 IPv6                ARP
 * Hop Limit
 * Source IP address
 * Destination IP address
+* IPv6 Extention Headers
 
 ### TCP
 
@@ -175,7 +175,10 @@ IPv4 IPv6                ARP
 * Echo Reply
 * Identifier
 * Sequence Number
-* NDP (On progress)
+* NDP
+
+### Packet Filtering
+* Berkeley Packet Filter (BPF)
 
 
 ## Why IM I Building This?
