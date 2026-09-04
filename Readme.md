@@ -23,7 +23,7 @@ Progress and to do:
 * [x] Handle Ipv4 Fragmentation
 * [x] Handle IPv6 Fragmentation
 * [x] Parse ICMP (both v4 and v6)
-  *[x] Neighbor Discovery Protocol Parsing
+* [x] Neighbor Discovery Protocol Parsing
 * [x] Packet Filtering (Berkely Packet Filtering)
 * [ ] Track TCP Connections
 * [ ] Detect Retransmission

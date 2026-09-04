@@ -8,10 +8,11 @@ Table of Content
 - [Ethernet](ethernet.md)
 - [IPv4](ipv4.md)
 - [IPv6](ipv6.md)
-- [ICMP](icmp.md)
+- [ICMPv4](icmp.md)
 - [TCP](tcp.md)
 - [UDP](udp.md)
-- [ICMP](icmp.md)
+- [ICMPv6](icmpv6.md)
+- [Berkeley packet filter](bpf.md)
 - [C](c.md) 
 
 You can read whichever section interests you, or start from the beginning and follow the packet from the bottom up.
