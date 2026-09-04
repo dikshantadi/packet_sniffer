@@ -147,9 +147,9 @@ void parse_ipv6(const unsigned char *packet, uint16_t packet_length)
         result.payload;
 
 
-    uint16_t final_length =
+    /*uint16_t final_length =
         result.payload_length;
-
+*/
 
     /*
      * Fragment handling.

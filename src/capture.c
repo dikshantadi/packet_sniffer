@@ -4,7 +4,6 @@
 #include "capture.h"
 #include "ethernet.h"
 
-
 void list_interfaces(void)
 {
     char errbuf[PCAP_ERRBUF_SIZE];
@@ -28,44 +27,86 @@ void list_interfaces(void)
     pcap_freealldevs(alldevs);
 }
 
-void open_capture (const char *device){
+void open_capture(const char *device)
+{
     char errbuf[PCAP_ERRBUF_SIZE];
 
-    pcap_t *handle;
+    struct bpf_program filter_program;
+    char filter_exp[] = "tcp";
 
-    handle = pcap_open_live(device,
-         BUFSIZ,
+    pcap_t *handle = pcap_open_live(
+        device,
+        BUFSIZ,
         1,
         1000,
-        errbuf);
-    if (handle == NULL) {
-	fprintf(stderr, "Couldn't open device %s: %s\n", device, errbuf);
-	return;
-}
+        errbuf
+    );
+
+    if (handle == NULL)
+    {
+        fprintf(stderr,
+                "Couldn't open device %s: %s\n",
+                device,
+                errbuf);
+        return;
+    }
+
     printf("Successfully opened: %s\n", device);
+
+    if (pcap_compile(
+            handle,
+            &filter_program,
+            filter_exp,
+            1,
+            PCAP_NETMASK_UNKNOWN
+        ) == -1)
+    {
+        fprintf(stderr,
+                "Couldn't parse filter %s: %s\n",
+                filter_exp,
+                pcap_geterr(handle));
+
+        pcap_close(handle);
+        return;
+    }
+
+    if (pcap_setfilter(handle, &filter_program) == -1)
+    {
+        fprintf(stderr,
+                "Couldn't install filter %s: %s\n",
+                filter_exp,
+                pcap_geterr(handle));
+
+        pcap_freecode(&filter_program);
+        pcap_close(handle);
+        return;
+    }
+
+    pcap_freecode(&filter_program);
+
+    printf("Filter applied: %s\n", filter_exp);
 
     struct pcap_pkthdr *header;
     const u_char *packet;
     int packet_count = 0;
 
-while (packet_count < 10)
-{
-    int result = pcap_next_ex(handle, &header, &packet);
-
-    if (result == 1)
+    while (packet_count < 10)
     {
-        printf("\nPacket %d\n", packet_count + 1);
-        printf("========================\n");
+        int result = pcap_next_ex(handle, &header, &packet);
 
-        printf("Captured length: %u bytes\n", header->caplen);
-        printf("Original length: %u bytes\n", header->len);
+        if (result == 1)
+        {
+            printf("\nPacket %d\n", packet_count + 1);
+            printf("========================\n");
 
-        parse_ethernet(packet, header->caplen);
+            printf("Captured length: %u bytes\n", header->caplen);
+            printf("Original length: %u bytes\n", header->len);
 
-        packet_count++;
+            parse_ethernet(packet, header->caplen);
+
+            packet_count++;
+        }
     }
-}
-    
+
     pcap_close(handle);
-   
 }
