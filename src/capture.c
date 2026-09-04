@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <pcap.h>
+#include <string.h>
 
 #include "capture.h"
 #include "ethernet.h"
@@ -32,7 +33,7 @@ void open_capture(const char *device)
     char errbuf[PCAP_ERRBUF_SIZE];
 
     struct bpf_program filter_program;
-    char filter_exp[] = "tcp";
+    char filter_exp[256] = "";  // Important for now 
 
     pcap_t *handle = pcap_open_live(
         device,
@@ -53,6 +54,11 @@ void open_capture(const char *device)
 
     printf("Successfully opened: %s\n", device);
 
+    printf("Enter BPF Filter (press Enter for none): ");
+    fgets(filter_exp, sizeof(filter_exp), stdin);
+
+    filter_exp[strcspn(filter_exp, "\n")] = '\0';
+    if (strlen (filter_exp) > 0){
     if (pcap_compile(
             handle,
             &filter_program,
@@ -85,6 +91,10 @@ void open_capture(const char *device)
     pcap_freecode(&filter_program);
 
     printf("Filter applied: %s\n", filter_exp);
+}
+ else {
+    printf("No filter applied. Capturing all packets \n");
+ }
 
     struct pcap_pkthdr *header;
     const u_char *packet;
