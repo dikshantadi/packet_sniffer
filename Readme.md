@@ -31,7 +31,6 @@ Progress and to do:
   * [ ] DNS
   * [ ] HTTP
   * [ ] QUIC
-* [ ] Add packet filtering
 * [ ] IPv4 Fragment Reassembly
 * [ ] Add packet statistics
 * [ ] Packet loss detection

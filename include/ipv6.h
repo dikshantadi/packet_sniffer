@@ -2,6 +2,7 @@
 #define IPV6_H
 
 #include <stdint.h>
+#include "stat.h"
 
 struct ipv6_header
 {
@@ -18,7 +19,8 @@ struct ipv6_header
 
 void parse_ipv6(
     const unsigned char *packet,
-    uint16_t packet_length
+    uint16_t packet_length,
+    struct capture_stats *stat
 );
 
 #endif

@@ -5,6 +5,7 @@
 #include "ipv6.h"
 #include "arp.h"
 #include <stdint.h>
+#include "stat.h"
 
 void print_mac(const unsigned char *mac)
 {
@@ -17,7 +18,10 @@ void print_mac(const unsigned char *mac)
            mac[5]);
 }
 
-int parse_ethernet(const unsigned char *packet, uint32_t packet_length)
+int parse_ethernet(
+    const unsigned char *packet, 
+    uint32_t packet_length,
+    struct capture_stats *stats)
 {
     const struct ethernet_header *eth =
         (const struct ethernet_header *)packet;
@@ -36,13 +40,16 @@ int parse_ethernet(const unsigned char *packet, uint32_t packet_length)
     printf("========================\n");
 
     if (ether_type == 0x0800) {
-        parse_ipv4(packet + 14);
+        stats->ipv4_packets++;
+        parse_ipv4(packet + 14, stats);
         return 1;
     }
     else if (ether_type == 0x86DD) {
-        parse_ipv6(packet + 14, packet_length - 14);
+        stats->ipv6_packets++;
+        parse_ipv6(packet + 14, packet_length - 14, stats);
     }
     else if (ether_type == 0x0806){
+        stats->arp_packets++;
         parse_arp(packet + 14);
     }
     else {

@@ -5,8 +5,9 @@
 #include "udp.h"
 #include "icmp.h"
 #include "ipv4_options.h"
+#include "stat.h"
 
-void parse_ipv4(const unsigned char *packet)
+void parse_ipv4(const unsigned char *packet, struct capture_stats *stats)
 {
 
     const struct ipv4_header *ip = (const struct ipv4_header *)packet;
@@ -54,6 +55,7 @@ void parse_ipv4(const unsigned char *packet)
 
     if (protocol == 6){
         if (fragment_offset == 0) {
+            stats->tcp_packets++;
             parse_tcp(packet + ihl * 4); 
         }
         else {
@@ -62,6 +64,7 @@ void parse_ipv4(const unsigned char *packet)
     }
     else if (protocol == 17){
         if (fragment_offset == 0) {
+            stats->udp_packets++;
         parse_udp(packet + ihl * 4);
         }
         else {
@@ -70,6 +73,7 @@ void parse_ipv4(const unsigned char *packet)
     }
     else if (protocol == 1){
         if (fragment_offset == 0){
+            stats->icmp_packets++;
             parse_icmp(packet + ihl * 4);
         }
         else {

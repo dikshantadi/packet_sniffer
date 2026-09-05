@@ -1,6 +1,7 @@
 #ifndef IPV4_H
 #define IPV4_H
 #include <stdint.h>
+#include "stat.h"
 
 struct ipv4_header {
     uint8_t version_ihl;
@@ -17,6 +18,9 @@ struct ipv4_header {
     uint8_t options_length;
 };
 
-void parse_ipv4(const unsigned char *packet);
+void parse_ipv4(
+    const unsigned char *packet,
+    struct capture_stats *stat
+);
 
 #endif

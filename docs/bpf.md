@@ -1,6 +1,6 @@
 # Berkeley packet filter (BPF)
 
-The Berkeley Packet Filter (BPF; also BSD Packet Filter, classic BPF or cBPF) is a network tap mechanism and packet filter which permits computer network packets to be captured and filtered at the operating system level. 
+The Berkeley Packet Filter (BPF; also BSD Packet Filter) is a network tap mechanism and packet filter which permits computer network packets to be captured and filtered at the operating system level. 
 
 The filter program is in the form of instructions for a virtual machine, which are interpreted, or compiled into machine code by a just-in-time (JIT) mechanism and executed, in the kernel.
 

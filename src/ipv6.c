@@ -9,7 +9,7 @@
 #include "tcp.h"
 #include "udp.h"
 #include "icmp6.h"
-
+#include "stat.h"
 
 #define IPV6_HEADER_LENGTH 40
 #define TCP_PROTOCOL   6
@@ -18,7 +18,11 @@
 #define IPV6_NO_NEXT 59
 
 
-void parse_ipv6(const unsigned char *packet, uint16_t packet_length)
+void parse_ipv6(
+    const unsigned char *packet, 
+    uint16_t packet_length,
+    struct capture_stats *stats
+    )
 {
     if (packet_length < IPV6_HEADER_LENGTH)
     {
@@ -181,6 +185,7 @@ void parse_ipv6(const unsigned char *packet, uint16_t packet_length)
      */
     if (final_protocol == TCP_PROTOCOL)
     {
+        stats->tcp_packets++;
         parse_tcp(final_payload);
     }
 
@@ -189,7 +194,8 @@ void parse_ipv6(const unsigned char *packet, uint16_t packet_length)
      * UDP
      */
     else if (final_protocol == UDP_PROTOCOL)
-    {
+    {   
+        stats->udp_packets++;
         parse_udp(final_payload);
     }
 
@@ -199,6 +205,7 @@ void parse_ipv6(const unsigned char *packet, uint16_t packet_length)
      */
     else if (final_protocol == ICMPV6_PROTOCOL)
     {
+        stats->icmp6_packets++;
         parse_icmp6(final_payload);
     }
 

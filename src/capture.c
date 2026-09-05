@@ -4,6 +4,7 @@
 
 #include "capture.h"
 #include "ethernet.h"
+#include "stat.h"
 
 void list_interfaces(void)
 {
@@ -28,7 +29,7 @@ void list_interfaces(void)
     pcap_freealldevs(alldevs);
 }
 
-void open_capture(const char *device)
+void open_capture(const char *device, struct capture_stats *stats)
 {
     char errbuf[PCAP_ERRBUF_SIZE];
 
@@ -106,13 +107,17 @@ void open_capture(const char *device)
 
         if (result == 1)
         {
+            stats->total_packets++;
+            stats->total_captured_bytes += header->caplen;
+            stats->total_original_bytes += header->len;
+
             printf("\nPacket %d\n", packet_count + 1);
             printf("========================\n");
 
             printf("Captured length: %u bytes\n", header->caplen);
             printf("Original length: %u bytes\n", header->len);
 
-            parse_ethernet(packet, header->caplen);
+            parse_ethernet(packet, header->caplen, stats);
 
             packet_count++;
         }
