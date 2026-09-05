@@ -16,11 +16,17 @@ void init_capture_stats (struct capture_stats *stats){
 
     stats->arp_packets = 0;
 
+    stats->capture_duration = 0;
+
 }
 
 void print_capture_stats (const struct capture_stats *stats){
     printf ("\n");
     printf("========== Capture Statistics ==========\n");
+
+    printf("Capture Duration : %.2f seconds \n", stats->capture_duration);
+    printf ("\n");
+
 
     printf("Total Packets : %lu \n", stats->total_packets);
     printf("Captured bytes : %lu \n", stats->total_captured_bytes);

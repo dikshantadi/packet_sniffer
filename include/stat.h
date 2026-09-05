@@ -8,6 +8,8 @@ struct capture_stats {
     unsigned long total_captured_bytes;
     unsigned long total_original_bytes;
 
+    double capture_duration;
+    
     //Network later protocols
     unsigned long ipv4_packets;
     unsigned long ipv6_packets;
