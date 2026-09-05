@@ -221,6 +221,14 @@ void open_capture(
             stats->total_original_bytes +=
                 header->len;
 
+            if (stats->min_packet_size == 0 || header->caplen < stats -> min_packet_size){
+                stats->min_packet_size = header ->caplen;
+            }
+
+            if (header -> caplen > stats->max_packet_size){
+                stats -> max_packet_size = header -> caplen;
+            }
+
 
 
             // Display packet information

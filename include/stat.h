@@ -9,7 +9,7 @@ struct capture_stats {
     unsigned long total_original_bytes;
 
     double capture_duration;
-    
+
     //Network later protocols
     unsigned long ipv4_packets;
     unsigned long ipv6_packets;
@@ -22,6 +22,9 @@ struct capture_stats {
 
     //Link layer
     unsigned long arp_packets;
+
+    unsigned int min_packet_size;
+    unsigned int max_packet_size;
 };
 
 void init_capture_stats(struct capture_stats *stats);
