@@ -21,7 +21,8 @@
 void parse_ipv6(
     const unsigned char *packet, 
     uint16_t packet_length,
-    struct capture_stats *stats
+    struct capture_stats *stats,
+    struct flow **flow_list
     )
 {
     if (packet_length < IPV6_HEADER_LENGTH)

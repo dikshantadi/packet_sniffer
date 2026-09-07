@@ -13,7 +13,7 @@ int main(void)
 
     list_interfaces();
 
-    open_capture("wlp0s20f3", &stats);
+    open_capture("wlp0s20f3", &stats, &flow_list);
 
     print_capture_stats(&stats);
 

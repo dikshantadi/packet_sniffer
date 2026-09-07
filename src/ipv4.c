@@ -7,7 +7,7 @@
 #include "ipv4_options.h"
 #include "stat.h"
 
-void parse_ipv4(const unsigned char *packet, struct capture_stats *stats)
+void parse_ipv4(const unsigned char *packet, struct capture_stats *stats, struct flow **flow_list)
 {
 
     const struct ipv4_header *ip = (const struct ipv4_header *)packet;

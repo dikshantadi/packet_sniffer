@@ -2,7 +2,13 @@
 #include <arpa/inet.h>
 #include "udp.h"
 
-void parse_udp (const unsigned char *packet){
+void parse_udp (
+    const unsigned char *packet
+    struct flow **flow_list,
+    struct flow_endpoint source,
+    struct flow_endpoint destination,
+    unsigned int packet_size
+){
     const struct udp_header * udp = (const struct udp_header *)packet;
     
     uint16_t udp_source = ntohs(udp->udp_source);

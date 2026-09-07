@@ -2,8 +2,15 @@
 #include <arpa/inet.h>
 #include "tcp.h"
 #include "tcp_options.h"
+#include "flow.h"
 
-void parse_tcp(const unsigned char *packet){
+void parse_tcp(
+    const unsigned char *packet,
+    struct flow **flow_list,
+    struct flow_endpoint source,
+    struct flow_endpoint destination,
+    unsigned int packet_size    
+){
     const struct tcp_header *tcp = (const struct tcp_header *)packet;
 
     uint16_t source_port = ntohs(tcp->source_port);

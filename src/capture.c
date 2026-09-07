@@ -38,6 +38,7 @@ void list_interfaces(void)
 void open_capture(
     const char *device,
     struct capture_stats *stats
+    struct flow **flow_list
 )
 {
     char errbuf[PCAP_ERRBUF_SIZE];
