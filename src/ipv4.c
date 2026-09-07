@@ -6,6 +6,7 @@
 #include "icmp.h"
 #include "ipv4_options.h"
 #include "stat.h"
+#include "flow.h"
 
 void parse_ipv4(const unsigned char *packet, struct capture_stats *stats, struct flow **flow_list)
 {
@@ -53,10 +54,25 @@ void parse_ipv4(const unsigned char *packet, struct capture_stats *stats, struct
 
     }
 
+    struct flow_endpoint source = {0};
+    struct flow_endpoint destination = {0};
+
+    source.ip.version = 4;
+    source.ip.address.ipv4.s_addr = ip->source_ip;
+    
+    destination.ip.version = 4;
+    destination.ip.address.ipv4.s_addr = ip->destination_ip;
+    
     if (protocol == 6){
         if (fragment_offset == 0) {
             stats->tcp_packets++;
-            parse_tcp(packet + ihl * 4); 
+            parse_tcp(
+                packet + ihl * 4,
+                flow_list,
+                source,
+                destination,
+                total_length
+            ); 
         }
         else {
             printf ("TCP fragment - transport header not present \n");
@@ -65,7 +81,13 @@ void parse_ipv4(const unsigned char *packet, struct capture_stats *stats, struct
     else if (protocol == 17){
         if (fragment_offset == 0) {
             stats->udp_packets++;
-        parse_udp(packet + ihl * 4);
+        parse_udp(
+            packet + ihl * 4,
+            flow_list,
+            source,
+            destination,
+            total_length
+        );
         }
         else {
             printf ("UDP fragment - transport header not present \n");

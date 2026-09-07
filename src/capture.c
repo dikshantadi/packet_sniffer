@@ -37,7 +37,7 @@ void list_interfaces(void)
 
 void open_capture(
     const char *device,
-    struct capture_stats *stats
+    struct capture_stats *stats,
     struct flow **flow_list
 )
 {
@@ -248,7 +248,8 @@ void open_capture(
             parse_ethernet(
                 packet,
                 header->caplen,
-                stats
+                stats,
+                flow_list
             );
         }
         else if (result == 0)

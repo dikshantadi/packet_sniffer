@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include "stat.h"
+#include "flow.h"
 
 struct ethernet_header {
     unsigned char destination[6];
@@ -13,6 +14,9 @@ struct ethernet_header {
 int parse_ethernet(
     const unsigned char *packet, 
     uint32_t packet_length, 
-    struct capture_stats *stats);
+    struct capture_stats *stats,
+    struct flow **flow_list
+
+);
 
 #endif

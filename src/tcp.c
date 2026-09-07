@@ -16,6 +16,52 @@ void parse_tcp(
     uint16_t source_port = ntohs(tcp->source_port);
     uint16_t destination_port = ntohs(tcp->destination_port);
 
+    source.port = source_port;
+    destination.port = destination_port;
+
+    struct flow *flow = find_flow(
+        *flow_list,
+        &source,
+        &destination,
+        6
+    );
+
+    if (flow != NULL)
+{
+    int direction = get_flow_direction(
+        flow,
+        &source
+    );
+
+    update_flow(
+        flow,
+        direction,
+        packet_size
+    );
+}
+else
+{
+    flow = create_flow(
+        &source,
+        &destination,
+        6
+    );
+
+    if (flow != NULL)
+    {
+        add_flow(
+            flow_list,
+            flow
+        );
+
+        update_flow(
+            flow,
+            FLOW_A_TO_B,
+            packet_size
+        );
+    }
+}
+
     uint32_t seq_no = ntohl(tcp->seq_no);
     uint32_t ack_no = ntohl(tcp->ack_no);
 

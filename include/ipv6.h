@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include "stat.h"
+#include "flow.h"
 
 struct ipv6_header
 {
@@ -20,7 +21,8 @@ struct ipv6_header
 void parse_ipv6(
     const unsigned char *packet,
     uint16_t packet_length,
-    struct capture_stats *stat
+    struct capture_stats *stat,
+    struct flow **flow_list
 );
 
 #endif

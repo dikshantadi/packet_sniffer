@@ -2,6 +2,7 @@
 #define IPV4_H
 #include <stdint.h>
 #include "stat.h"
+#include "flow.h"
 
 struct ipv4_header {
     uint8_t version_ihl;
@@ -20,7 +21,8 @@ struct ipv4_header {
 
 void parse_ipv4(
     const unsigned char *packet,
-    struct capture_stats *stat
+    struct capture_stats *stat,
+    struct flow **flow_list
 );
 
 #endif

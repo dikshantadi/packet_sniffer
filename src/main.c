@@ -2,6 +2,7 @@
 
 #include "capture.h"
 #include "stat.h"
+#include "flow.h"
 
 int main(void)
 {
@@ -9,6 +10,7 @@ int main(void)
     printf("================\n");
 
     struct capture_stats stats;
+    struct flow *flow_list = NULL;
     init_capture_stats(&stats);
 
     list_interfaces();
@@ -16,6 +18,8 @@ int main(void)
     open_capture("wlp0s20f3", &stats, &flow_list);
 
     print_capture_stats(&stats);
+    print_flow(flow_list);
+    free_flow(flow_list);
 
     return 0;
 }

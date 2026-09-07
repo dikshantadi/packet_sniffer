@@ -2,6 +2,7 @@
 #define TCP_H
 
 #include <stdint.h>
+#include "flow.h"
 
 struct tcp_header {
     uint16_t source_port;
@@ -16,6 +17,12 @@ struct tcp_header {
     uint8_t option_length;
 };
 
-void parse_tcp(const unsigned char *packet);
+void parse_tcp(
+    const unsigned char *packet,
+    struct flow **flow_list,
+    struct flow_endpoint source,
+    struct flow_endpoint destination,
+    unsigned int packet_size
+);
 
 #endif

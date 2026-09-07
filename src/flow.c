@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <arpa/inet.h>
 #include "flow.h"
 
 void init_flow(struct flow *flow){
@@ -199,4 +199,126 @@ void add_flow (
     new_flow->next = *flow_list;
 
     *flow_list = new_flow;    
+}
+
+void print_flow(const struct flow *flow_list)
+{
+    const struct flow *current = flow_list;
+
+    int flow_number = 1;
+
+    printf("\n");
+    printf("========== Flow Statistics ==========\n");
+
+    while (current != NULL)
+    {
+        char source_ip[INET6_ADDRSTRLEN];
+        char destination_ip[INET6_ADDRSTRLEN];
+
+        if (current->endpoint_a.ip.version == 4)
+        {
+            inet_ntop(
+                AF_INET,
+                &current->endpoint_a.ip.address.ipv4,
+                source_ip,
+                sizeof(source_ip)
+            );
+
+            inet_ntop(
+                AF_INET,
+                &current->endpoint_b.ip.address.ipv4,
+                destination_ip,
+                sizeof(destination_ip)
+            );
+        }
+        else
+        {
+            inet_ntop(
+                AF_INET6,
+                &current->endpoint_a.ip.address.ipv6,
+                source_ip,
+                sizeof(source_ip)
+            );
+
+            inet_ntop(
+                AF_INET6,
+                &current->endpoint_b.ip.address.ipv6,
+                destination_ip,
+                sizeof(destination_ip)
+            );
+        }
+
+        printf("\nFlow %d\n", flow_number++);
+        printf("-------------------------------------\n");
+
+        printf(
+            "Protocol    : %s\n",
+            current->protocol == 6 ? "TCP" :
+            current->protocol == 17 ? "UDP" :
+            "Unknown"
+        );
+
+        printf(
+            "Endpoint A  : %s:%u\n",
+            source_ip,
+            current->endpoint_a.port
+        );
+
+        printf(
+            "Endpoint B  : %s:%u\n",
+            destination_ip,
+            current->endpoint_b.port
+        );
+
+        printf(
+            "Total Packets : %lu\n",
+            current->total_packets
+        );
+
+        printf(
+            "Total Bytes   : %lu\n",
+            current->total_bytes
+        );
+
+        printf("\nA -> B\n");
+
+        printf(
+            "  Packets : %lu\n",
+            current->packets_a_to_b
+        );
+
+        printf(
+            "  Bytes   : %lu\n",
+            current->bytes_a_to_b
+        );
+
+        printf("\nB -> A\n");
+
+        printf(
+            "  Packets : %lu\n",
+            current->packets_b_to_a
+        );
+
+        printf(
+            "  Bytes   : %lu\n",
+            current->bytes_b_to_a
+        );
+
+        current = current->next;
+    }
+
+    printf("\n=====================================\n");
+}
+
+void free_flow(struct flow *flow_list){
+    struct flow *current = flow_list;
+
+    while (current != NULL)
+    {
+        struct flow *next = current->next;
+
+        free(current);
+
+        current = next;
+    }
 }

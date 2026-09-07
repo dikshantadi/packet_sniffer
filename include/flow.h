@@ -106,4 +106,8 @@ void add_flow(
     struct flow *new_flow
 );
 
+void print_flow(const struct flow *flow_list);
+
+void free_flow(struct flow *flow_list);
+
 #endif

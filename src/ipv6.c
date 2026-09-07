@@ -180,6 +180,23 @@ void parse_ipv6(
         return;
     }
 
+    struct flow_endpoint source = {0};
+    struct flow_endpoint destination = {0};
+
+    source.ip.version = 6;
+    memcpy(
+        &source.ip.address.ipv6,
+        ipv6->source,
+        sizeof(struct in6_addr)
+    );
+
+    destination.ip.version = 6;
+    memcpy(
+        &destination.ip.address.ipv6,
+        ipv6->destination,
+        sizeof(struct in6_addr)
+    );
+
 
     /*
      * TCP
@@ -187,7 +204,14 @@ void parse_ipv6(
     if (final_protocol == TCP_PROTOCOL)
     {
         stats->tcp_packets++;
-        parse_tcp(final_payload);
+        parse_tcp(
+            final_payload,
+            flow_list,
+            source,
+            destination,
+            packet_length
+        
+        );
     }
 
 
@@ -197,7 +221,12 @@ void parse_ipv6(
     else if (final_protocol == UDP_PROTOCOL)
     {   
         stats->udp_packets++;
-        parse_udp(final_payload);
+        parse_udp(
+            final_payload,
+            flow_list,
+            source,
+            destination,
+            packet_length);
     }
 
 
