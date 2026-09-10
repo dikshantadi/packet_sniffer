@@ -33,6 +33,31 @@ void update_flow(
     unsigned int packet_size,
     const struct timeval *timestamp
 ){
+
+    if (flow->total_packets > 0)
+{
+    double iat = timeval_diff(
+        timestamp,
+        &flow->last_packet_time
+    );
+
+    if (flow->iat_count == 0)
+    {
+        flow->min_iat = iat;
+        flow->max_iat = iat;
+    }
+    else
+    {
+        if (iat < flow->min_iat)
+            flow->min_iat = iat;
+
+        if (iat > flow->max_iat)
+            flow->max_iat = iat;
+    }
+
+    flow->iat_sum += iat;
+    flow->iat_count++;
+}
     flow->end_time = *timestamp;
     flow -> total_packets++;
     flow->total_bytes += packet_size;
@@ -46,6 +71,9 @@ void update_flow(
         flow->packets_b_to_a++;
         flow->bytes_b_to_a += packet_size;
     }
+
+
+flow->last_packet_time = *timestamp;
 }
 
 int get_flow_direction(
@@ -194,6 +222,12 @@ struct flow *create_flow(
 
     new_flow->start_time = *timestamp;
     new_flow->end_time = *timestamp;
+    new_flow->last_packet_time = *timestamp;
+
+    new_flow->iat_sum = 0.0;
+    new_flow->min_iat = 0.0;
+    new_flow->max_iat = 0.0;
+    new_flow->iat_count = 0;
 
     return new_flow;
 }
@@ -341,9 +375,20 @@ void print_flow(const struct flow *flow_list)
 
         double byte_rate_kb = byte_rate / 1000.0;
 
+        double average_iat = 0.0;
+
         printf("Duration    : %.6f seconds\n", duration);
         printf("Packet Rate : %.2f packets / sec \n", packet_rate);
-        printf("Byte Rate : %.2f KB/s \n", byte_rate_kb);
+        printf("Byte Rate   : %.2f KB/s \n", byte_rate_kb);
+
+        if (current->iat_count > 0)
+        {
+            average_iat = current->iat_sum / current->iat_count;
+        }
+
+            printf("Average IAT : %.3f ms\n", average_iat * 1000.0);
+            printf("Minimum IAT : %.3f ms\n", current->min_iat * 1000.0);
+            printf("Maximum IAT : %.3f ms\n", current->max_iat * 1000.0);
 
             current = current->next;
         

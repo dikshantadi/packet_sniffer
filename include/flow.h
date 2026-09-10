@@ -41,6 +41,12 @@ struct flow
     
     struct timeval start_time;
     struct timeval end_time;
+    struct timeval last_packet_time;
+
+    double iat_sum;
+    double min_iat;
+    double max_iat;
+    unsigned long iat_count;
 
     unsigned long total_packets;
     unsigned long total_bytes;
@@ -111,6 +117,11 @@ struct flow *find_flow(
 void add_flow(
     struct flow **flow_list,
     struct flow *new_flow
+);
+
+double timeval_diff(
+    const struct timeval *end,
+    const struct timeval *start
 );
 
 void print_flow(const struct flow *flow_list);
