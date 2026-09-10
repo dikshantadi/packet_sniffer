@@ -330,9 +330,20 @@ void print_flow(const struct flow *flow_list)
         double duration = timeval_diff(
             &current->end_time,
             &current->start_time);
+        
+        double packet_rate = 0.0;
+        double byte_rate = 0.0;
+            if (duration > 0.0)
+            {
+                packet_rate = current->total_packets / duration;
+                byte_rate = current->total_bytes / duration;
+            }
 
-        printf("Duration    : %.6f seconds\n", 
-                duration);
+        double byte_rate_kb = byte_rate / 1000.0;
+
+        printf("Duration    : %.6f seconds\n", duration);
+        printf("Packet Rate : %.2f packets / sec \n", packet_rate);
+        printf("Byte Rate : %.2f KB/s \n", byte_rate_kb);
 
             current = current->next;
         
