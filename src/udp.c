@@ -1,13 +1,15 @@
 #include <stdio.h>
 #include <arpa/inet.h>
 #include "udp.h"
+#include <sys/time.h>
 
 void parse_udp(
     const unsigned char *packet,
     struct flow **flow_list,
     struct flow_endpoint source,
     struct flow_endpoint destination,
-    unsigned int packet_size
+    unsigned int packet_size,
+    const struct timeval *timestamp
 )
 {
     const struct udp_header *udp =
@@ -39,7 +41,8 @@ void parse_udp(
         update_flow(
             flow,
             direction,
-            packet_size
+            packet_size,
+            timestamp
         );
     }
     else
@@ -47,7 +50,8 @@ void parse_udp(
         flow = create_flow(
             &source,
             &destination,
-            17
+            17,
+            timestamp
         );
 
         if (flow != NULL)
@@ -60,7 +64,8 @@ void parse_udp(
             update_flow(
                 flow,
                 FLOW_A_TO_B,
-                packet_size
+                packet_size,
+                timestamp
             );
         }
     }

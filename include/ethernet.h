@@ -15,7 +15,9 @@ int parse_ethernet(
     const unsigned char *packet, 
     uint32_t packet_length, 
     struct capture_stats *stats,
-    struct flow **flow_list
+    struct flow **flow_list,
+    const struct timeval *timestamp
+
 
 );
 

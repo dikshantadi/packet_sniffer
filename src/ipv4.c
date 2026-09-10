@@ -7,8 +7,9 @@
 #include "ipv4_options.h"
 #include "stat.h"
 #include "flow.h"
+#include <sys/time.h>
 
-void parse_ipv4(const unsigned char *packet, struct capture_stats *stats, struct flow **flow_list)
+void parse_ipv4(const unsigned char *packet, struct capture_stats *stats, struct flow **flow_list, const struct timeval *timestamp)
 {
 
     const struct ipv4_header *ip = (const struct ipv4_header *)packet;
@@ -71,7 +72,8 @@ void parse_ipv4(const unsigned char *packet, struct capture_stats *stats, struct
                 flow_list,
                 source,
                 destination,
-                total_length
+                total_length,
+                timestamp
             ); 
         }
         else {
@@ -86,7 +88,8 @@ void parse_ipv4(const unsigned char *packet, struct capture_stats *stats, struct
             flow_list,
             source,
             destination,
-            total_length
+            total_length,
+            timestamp
         );
         }
         else {

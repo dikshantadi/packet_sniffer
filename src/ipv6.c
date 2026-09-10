@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <arpa/inet.h>
+#include <sys/time.h>
 
 #include "ipv6.h"
 #include "ipv6_exthdr.h"
@@ -22,7 +23,8 @@ void parse_ipv6(
     const unsigned char *packet, 
     uint16_t packet_length,
     struct capture_stats *stats,
-    struct flow **flow_list
+    struct flow **flow_list,
+    const struct timeval *timestamp
     )
 {
     if (packet_length < IPV6_HEADER_LENGTH)
@@ -209,7 +211,8 @@ void parse_ipv6(
             flow_list,
             source,
             destination,
-            packet_length
+            packet_length,
+            timestamp
         
         );
     }
@@ -226,7 +229,9 @@ void parse_ipv6(
             flow_list,
             source,
             destination,
-            packet_length);
+            packet_length,
+            timestamp
+        );
     }
 
 

@@ -22,7 +22,9 @@ struct ipv4_header {
 void parse_ipv4(
     const unsigned char *packet,
     struct capture_stats *stat,
-    struct flow **flow_list
+    struct flow **flow_list,
+    const struct timeval *timestamp
+
 );
 
 #endif

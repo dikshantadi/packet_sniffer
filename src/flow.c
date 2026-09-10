@@ -30,8 +30,10 @@ void set_flow (
 void update_flow(
     struct flow *flow,
     enum flow_direction direction,
-    unsigned int packet_size
+    unsigned int packet_size,
+    const struct timeval *timestamp
 ){
+    flow->end_time = *timestamp;
     flow -> total_packets++;
     flow->total_bytes += packet_size;
 
@@ -170,7 +172,8 @@ struct flow *find_flow(
 struct flow *create_flow(
     const struct flow_endpoint *endpoint_a,
     const struct flow_endpoint *endpoint_b,
-    uint8_t protocol
+    uint8_t protocol,
+    const struct timeval *timestamp
 )
 {
     struct flow *new_flow = malloc(sizeof(struct flow));
@@ -189,6 +192,9 @@ struct flow *create_flow(
         protocol
     );
 
+    new_flow->start_time = *timestamp;
+    new_flow->end_time = *timestamp;
+
     return new_flow;
 }
 
@@ -199,6 +205,15 @@ void add_flow (
     new_flow->next = *flow_list;
 
     *flow_list = new_flow;    
+}
+
+double timeval_diff(
+    const struct timeval *end,
+    const struct timeval *start
+)
+{
+    return (double)(end->tv_sec - start->tv_sec)
+         + (double)(end->tv_usec - start->tv_usec) / 1000000.0;
 }
 
 void print_flow(const struct flow *flow_list)
@@ -304,7 +319,23 @@ void print_flow(const struct flow *flow_list)
             current->bytes_b_to_a
         );
 
-        current = current->next;
+        /*printf("Start Time : %ld.%06ld\n",
+            (long)current->start_time.tv_sec,
+            (long)current->start_time.tv_usec);
+
+        printf("End Time   : %ld.%06ld\n",
+            (long)current->end_time.tv_sec,
+            (long)current->end_time.tv_usec);*/
+       
+        double duration = timeval_diff(
+            &current->end_time,
+            &current->start_time);
+
+        printf("Duration    : %.6f seconds\n", 
+                duration);
+
+            current = current->next;
+        
     }
 
     printf("\n=====================================\n");

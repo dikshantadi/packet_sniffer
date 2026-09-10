@@ -3,13 +3,15 @@
 #include "tcp.h"
 #include "tcp_options.h"
 #include "flow.h"
+#include <sys/time.h>
 
 void parse_tcp(
     const unsigned char *packet,
     struct flow **flow_list,
     struct flow_endpoint source,
     struct flow_endpoint destination,
-    unsigned int packet_size    
+    unsigned int packet_size,
+    const struct timeval *timestamp    
 ){
     const struct tcp_header *tcp = (const struct tcp_header *)packet;
 
@@ -36,7 +38,8 @@ void parse_tcp(
     update_flow(
         flow,
         direction,
-        packet_size
+        packet_size,
+        timestamp
     );
 }
 else
@@ -44,7 +47,8 @@ else
     flow = create_flow(
         &source,
         &destination,
-        6
+        6,
+        timestamp
     );
 
     if (flow != NULL)
@@ -57,7 +61,8 @@ else
         update_flow(
             flow,
             FLOW_A_TO_B,
-            packet_size
+            packet_size,
+            timestamp
         );
     }
 }

@@ -7,6 +7,7 @@
 #include <stdint.h>
 #include "stat.h"
 #include "flow.h"
+#include <sys/time.h>
 
 void print_mac(const unsigned char *mac)
 {
@@ -23,7 +24,8 @@ int parse_ethernet(
     const unsigned char *packet, 
     uint32_t packet_length,
     struct capture_stats *stats,
-    struct flow **flow_list
+    struct flow **flow_list,
+    const struct timeval *timestamp
 )
 {
     const struct ethernet_header *eth =
@@ -44,12 +46,12 @@ int parse_ethernet(
 
     if (ether_type == 0x0800) {
         stats->ipv4_packets++;
-        parse_ipv4(packet + 14, stats, flow_list);
+        parse_ipv4(packet + 14, stats, flow_list, timestamp);
         return 1;
     }
     else if (ether_type == 0x86DD) {
         stats->ipv6_packets++;
-        parse_ipv6(packet + 14, packet_length - 14, stats, flow_list);
+        parse_ipv6(packet + 14, packet_length - 14, stats, flow_list, timestamp);
     }
     else if (ether_type == 0x0806){
         stats->arp_packets++;

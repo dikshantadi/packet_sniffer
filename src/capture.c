@@ -249,7 +249,8 @@ void open_capture(
                 packet,
                 header->caplen,
                 stats,
-                flow_list
+                flow_list,
+                &header->ts
             );
         }
         else if (result == 0)

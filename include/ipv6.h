@@ -22,7 +22,9 @@ void parse_ipv6(
     const unsigned char *packet,
     uint16_t packet_length,
     struct capture_stats *stat,
-    struct flow **flow_list
+    struct flow **flow_list,
+    const struct timeval *timestamp
+
 );
 
 #endif

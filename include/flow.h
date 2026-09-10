@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <netinet/in.h>
+#include <sys/time.h>
 
 
 struct ip_address
@@ -37,6 +38,9 @@ struct flow
     struct flow_endpoint endpoint_b;
 
     uint8_t protocol;
+    
+    struct timeval start_time;
+    struct timeval end_time;
 
     unsigned long total_packets;
     unsigned long total_bytes;
@@ -62,7 +66,8 @@ void set_flow(
 void update_flow(
     struct flow *flow,
     enum flow_direction direction,
-    unsigned int packet_size
+    unsigned int packet_size,
+    const struct timeval *timestamp
 );
 
 
@@ -89,7 +94,8 @@ int flow_matches(
 struct flow *create_flow(
     const struct flow_endpoint *endpoint_a,
     const struct flow_endpoint *endpoint_b,
-    uint8_t protocol
+    uint8_t protocol,
+    const struct timeval *timestamp
 );
 
 
@@ -99,6 +105,7 @@ struct flow *find_flow(
     const struct flow_endpoint *destination,
     uint8_t protocol
 );
+
 
 
 void add_flow(
