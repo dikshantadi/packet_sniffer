@@ -47,6 +47,7 @@ struct flow
     double min_iat;
     double max_iat;
     unsigned long iat_count;
+    double iat_sum_squared;
 
     unsigned long total_packets;
     unsigned long total_bytes;

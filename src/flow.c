@@ -3,6 +3,7 @@
 #include <string.h>
 #include <arpa/inet.h>
 #include "flow.h"
+#include <math.h>
 
 void init_flow(struct flow *flow){
     flow->total_packets = 0;
@@ -16,6 +17,8 @@ void init_flow(struct flow *flow){
 
     flow->max_packet_size = 0;
     flow->min_packet_size = 0;
+
+    flow->iat_sum_squared = 0.0;
 
     flow->next = NULL;
 }
@@ -43,6 +46,9 @@ void update_flow(
             &flow->last_packet_time
         );
 
+        flow->iat_sum += iat;
+        flow->iat_sum_squared += iat * iat;
+
         if (flow->iat_count == 0)
         {
             flow->min_iat = iat;
@@ -56,8 +62,6 @@ void update_flow(
             if (iat > flow->max_iat)
                 flow->max_iat = iat;
         }
-
-        flow->iat_sum += iat;
         flow->iat_count++;
     }
 
@@ -394,6 +398,8 @@ void print_flow(const struct flow *flow_list)
 
         double average_iat = 0.0;
         double average_packet_size = 0.0;
+        double iat_stddev = 0.0;
+        double variance_iat = 0.0;
 
         printf("Duration    : %.6f seconds\n", duration);
         printf("Packet Rate : %.2f packets / sec \n", packet_rate);
@@ -402,6 +408,14 @@ void print_flow(const struct flow *flow_list)
         if (current->iat_count > 0)
         {
             average_iat = current->iat_sum / current->iat_count;
+            
+            variance_iat =  (current->iat_sum_squared / current->iat_count) - (average_iat * average_iat);
+            //sigma = sqrt{E[X^2] - E[X]^2}, where x is IAT
+
+            if (variance_iat > 0.0){
+                iat_stddev = sqrt(variance_iat);
+            }
+
         }
 
         if (current->total_packets > 0){
@@ -409,11 +423,12 @@ void print_flow(const struct flow *flow_list)
         }
 
             printf("Average IAT : %.3f ms\n", average_iat * 1000.0);
-            printf("Minimum IAT : %.3f ms\n", current->min_iat * 1000.0);
-            printf("Maximum IAT : %.3f ms\n", current->max_iat * 1000.0);
+            printf("Minimum IAT : %.6f ms\n", current->min_iat * 1000.0);
+            printf("Maximum IAT : %.6f ms\n", current->max_iat * 1000.0);
             printf("Minimum Packet Size : %lu bytes \n", current -> min_packet_size);
             printf("Maximum Packet Size : %lu bytes \n", current->max_packet_size);
-
+            printf("Average Packet Size : %.2f bytes\n", average_packet_size);
+            printf("Packet Timing Variation : %.3f ms \n", iat_stddev * 1000.0);
 
             current = current->next;
         

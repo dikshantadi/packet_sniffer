@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -Iinclude
-LDLIBS = -lpcap
+LDLIBS = -lpcap -lm
 
 TARGET = packet-analyzer
 
