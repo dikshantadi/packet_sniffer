@@ -51,11 +51,15 @@ struct flow
     unsigned long total_packets;
     unsigned long total_bytes;
 
+    unsigned long min_packet_size;
+    unsigned long max_packet_size;
+
     unsigned long packets_a_to_b;
     unsigned long packets_b_to_a;
 
     unsigned long bytes_a_to_b;
     unsigned long bytes_b_to_a;
+
 
     struct flow *next;
 };

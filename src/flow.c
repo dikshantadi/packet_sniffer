@@ -14,6 +14,9 @@ void init_flow(struct flow *flow){
     flow->bytes_a_to_b = 0;
     flow->bytes_b_to_a = 0;
 
+    flow->max_packet_size = 0;
+    flow->min_packet_size = 0;
+
     flow->next = NULL;
 }
 
@@ -33,36 +36,51 @@ void update_flow(
     unsigned int packet_size,
     const struct timeval *timestamp
 ){
-
     if (flow->total_packets > 0)
-{
-    double iat = timeval_diff(
-        timestamp,
-        &flow->last_packet_time
-    );
-
-    if (flow->iat_count == 0)
     {
-        flow->min_iat = iat;
-        flow->max_iat = iat;
+        double iat = timeval_diff(
+            timestamp,
+            &flow->last_packet_time
+        );
+
+        if (flow->iat_count == 0)
+        {
+            flow->min_iat = iat;
+            flow->max_iat = iat;
+        }
+        else
+        {
+            if (iat < flow->min_iat)
+                flow->min_iat = iat;
+
+            if (iat > flow->max_iat)
+                flow->max_iat = iat;
+        }
+
+        flow->iat_sum += iat;
+        flow->iat_count++;
+    }
+
+    if (flow->total_packets == 0)
+    {
+        flow->min_packet_size = packet_size;
+        flow->max_packet_size = packet_size;
     }
     else
     {
-        if (iat < flow->min_iat)
-            flow->min_iat = iat;
+        if (packet_size < flow->min_packet_size)
+            flow->min_packet_size = packet_size;
 
-        if (iat > flow->max_iat)
-            flow->max_iat = iat;
+        if (packet_size > flow->max_packet_size)
+            flow->max_packet_size = packet_size;
     }
 
-    flow->iat_sum += iat;
-    flow->iat_count++;
-}
     flow->end_time = *timestamp;
-    flow -> total_packets++;
+    flow->total_packets++;
     flow->total_bytes += packet_size;
 
-    if (direction == FLOW_A_TO_B){
+    if (direction == FLOW_A_TO_B)
+    {
         flow->packets_a_to_b++;
         flow->bytes_a_to_b += packet_size;
     }
@@ -72,8 +90,7 @@ void update_flow(
         flow->bytes_b_to_a += packet_size;
     }
 
-
-flow->last_packet_time = *timestamp;
+    flow->last_packet_time = *timestamp;
 }
 
 int get_flow_direction(
@@ -376,6 +393,7 @@ void print_flow(const struct flow *flow_list)
         double byte_rate_kb = byte_rate / 1000.0;
 
         double average_iat = 0.0;
+        double average_packet_size = 0.0;
 
         printf("Duration    : %.6f seconds\n", duration);
         printf("Packet Rate : %.2f packets / sec \n", packet_rate);
@@ -386,13 +404,21 @@ void print_flow(const struct flow *flow_list)
             average_iat = current->iat_sum / current->iat_count;
         }
 
+        if (current->total_packets > 0){
+            average_packet_size = (double) current->total_bytes / current->total_packets;
+        }
+
             printf("Average IAT : %.3f ms\n", average_iat * 1000.0);
             printf("Minimum IAT : %.3f ms\n", current->min_iat * 1000.0);
             printf("Maximum IAT : %.3f ms\n", current->max_iat * 1000.0);
+            printf("Minimum Packet Size : %lu bytes \n", current -> min_packet_size);
+            printf("Maximum Packet Size : %lu bytes \n", current->max_packet_size);
+
 
             current = current->next;
         
     }
+        
 
     printf("\n=====================================\n");
 }
